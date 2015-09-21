@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Transforming web interface</title>
+</head>
+<body>
+<h3>Comment graph generator</h3>
+
+<div id="input">
+    <form action="." method="post">
+        <label for="urls">URLs of pages to parse, one per line.</label>
+        <textarea id="urls" name="urls" rows="10" cols="100"></textarea>
+        <label for="source">Source</label>
+        <select id="source" name="source">
+            <optgroup label="English">
+                <option value="gua">The Guardian</option>
+                <option value="cnn">CNN</option>
+                <option value="tguk">The Telegraph</option>
+                <option value="tim">This is Money</option>
+            </optgroup>
+            <optgroup label="Polish">
+                <option value="wp">Wirtualna Polska</option>
+                <option value="onetb">Forum Onet</option>
+                <option value="onetb">Onet Biznes</option>
+            </optgroup>
+        </select>
+        <input type="submit"/>
+    </form>
+</div>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div style="color: darkred;">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<hr/>
+<div id="output">
+    <h4>Previously processed data</h4>
+    <ul>
+        {% for item in batches %}
+            <li><a href="{{ item.url }}" target="_blank">{{ item.url }}</a> (processed on {{ item.timestamp }})
+                <ul>
+                    <li><a href="data/{{ item.id }}p.graphml">Get GraphML file</a> (<a
+                            href="data/{{ item.id }}c.graphml">excluding parent post</a>)
+                    </li>
+                    <li><a href="data/{{ item.id }}.xls">Get Excel datasheet</a></li>
+                    <li><a href="graph/{{ item.id }}p" target="_blank">View comment graph</a> (<a
+                            href="graph/{{ item.id }}c" target="_blank">excluding parent post</a>)
+                    </li>
+                    <li><a href="tree/{{ item.id }}t" target="_blank">View comment tree</a> (<a
+                            href="radial/{{ item.id }}t" target="_blank">as radial layout</a>)
+                    </li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

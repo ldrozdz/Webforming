@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script src="../static/d3.v3.min.js"></script>
+    <script src="../static/script.js"></script>
+    <script src="../static/jquery.mousewheel.js"></script>
+    <title>Transforming web interface</title>
+</head>
+<body>
+<h3>Comment tree</h3>
+<div style="font-weight: bold">Click on nodes to hide/expand children. Hover on nodes to view comment text. Use mouse wheel to zoom in/out, click & drag to pan graph area.</div>
+<button id="save_as_svg" value="">Save as PNG</button>
+<hr/>
+<form id="downloadform" method="post" action="../export">
+    <input type="hidden" id="filename" name="filename" value="">
+    <input type="hidden" id="data" name="data" value="">
+</form>
+<div id="plot"></div>
+<script>
+    $(window).load(function() {tree("../data/{{ id }}.json")});
+    $(document).ready(function()
+    {
+        $("#save_as_svg").click(function() { submit_download_form("{{ id }}"); });
+        $('body').on('mousewheel', function(event, delta){event.preventDefault();});
+    });
+
+</script>
+</body>
+</html>
